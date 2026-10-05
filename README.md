@@ -1,12 +1,43 @@
 # Local AI Assistant
 
-This project provides a **local assistant** for summarising and querying
-documents and images on your machine. It uses the open‑source
-[`ollama`](https://github.com/ollama/ollama) language model runner to power
-the language model, and [`Chroma`](https://www.trychroma.com/) for the
-vector store. The code base is written in Python and is ready to run on
-your own hardware with no external dependencies beyond the specified
-Python packages.
+![Python](https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white)
+![LLM](https://img.shields.io/badge/LLM-Ollama%20%28local%29-black)
+![Vector store](https://img.shields.io/badge/vector%20store-Chroma-orange)
+![Tests](https://img.shields.io/badge/tests-21%20unit%20tests-informational)
+![Last commit](https://img.shields.io/github/last-commit/bajundotdev/ai-assistant)
+
+> Point it at a folder of documents and it will summarise them and answer your
+> questions about them, using an AI model that runs entirely on your own computer.
+
+## In plain terms
+
+**The problem.** You have a folder full of reports, notes and scanned pages and
+no time to read them all. Online AI tools could help, but uploading work
+documents to someone else's server is often not allowed.
+
+**What this does.** It reads the files in a folder (PDF, Word, Markdown, plain
+text, and text inside images), writes a short bullet-point summary of each one,
+and lets you ask questions such as *"What does the report say about sales?"*.
+Each answer lists the files it came from, so you can check it.
+
+**Why it is different.** Nothing is uploaded. The language model runs locally
+through [Ollama](https://github.com/ollama/ollama), and the search index is
+stored on disk with [Chroma](https://www.trychroma.com/).
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Your folder of<br/>documents and images] --> B[Read the text<br/>PDF, DOCX, MD, TXT, OCR]
+    B --> C[Split into small pieces]
+    C --> D[Summaries saved<br/>to outputs/]
+    C --> E[Search index<br/>on your disk]
+    F[Your question] --> E
+    E --> G[Local AI model<br/>writes the answer<br/>and cites the files]
+```
+
+In technical terms this is a retrieval-augmented generation (RAG) pipeline with
+a command-line interface, written in Python.
 
 ## Features
 
@@ -126,6 +157,11 @@ The assistant reads settings from `config.yaml`. You can adjust:
   Ollama or another library.
 - **Web or GUI**: Build a web front‑end with Flask or FastAPI, or a
   Streamlit/Gradio interface for interactive use.
+
+## Status
+
+Version 0.1.0. A working command-line tool; there is no web or desktop interface
+yet. Answer quality depends on the local model you choose.
 
 ## License
 
